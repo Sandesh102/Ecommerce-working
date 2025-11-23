@@ -1,0 +1,153 @@
+{% extends 'products/base.html' %}
+{% load custom_filters %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'products/css/checkout.css' %}">
+{% endblock %}
+
+{% block start %}
+<div class="container py-4 checkout-container">
+    <h2 class="heading-green checkout-heading">Checkout</h2>
+
+    <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-7 col-md-12 mb-4">
+            <h5 class="heading-green heading-border-green" style="padding-bottom: 10px;">Your Cart</h5>
+            {% if cart_items %}
+                <table class="table table-striped checkout-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>Rs. {{ item.product.price }}</td>
+                            <td>Rs. {{ item.product.price|multiply:item.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Your cart is empty.</p>
+            {% endif %}
+        </div>
+
+        <!-- Order Summary & Delivery Form -->
+        <div class="col-lg-5 col-md-12">
+            <div class="bg-light-green" style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(31, 36, 31, 0.1);">
+                <h5 class="heading-green heading-border-green" style="padding-bottom: 10px;">Order Summary</h5>
+            <div class="mb-3" style="font-size: 16px;">
+                <strong>Subtotal ({{ cart_items|length }} items):</strong>
+                <span>Rs. {{ total_price }}</span>
+            </div>
+            <div class="mb-3" style="font-size: 16px;">
+                <strong>Shipping Fee:</strong>
+                <span>Rs. 0</span>
+            </div>
+            <hr class="checkout-hr">
+            <div class="mb-3" style="font-size: 16px;">
+                <strong>Total:</strong>
+                <span>Rs. {{ total_price }}</span>
+            </div>
+            <hr class="checkout-hr">
+
+            <!-- Delivery and Payment Form -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="heading-green" style="margin: 0;">Delivery Information</h5>
+                    {% if default_address %}
+                        <div>
+                            <span class="badge checkout-badge me-2">✓ Address Loaded</span>
+                            <a href="{% url 'profile' %}" class="btn btn-sm btn-primary-theme" style="font-size: 12px;">Manage Addresses</a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'profile' %}" class="btn btn-sm btn-primary-theme" style="font-size: 12px;">My Addresses</a>
+                    {% endif %}
+                </div>
+                
+                {% if default_address %}
+                <div class="alert alert-info checkout-alert">
+                    <strong>Note:</strong> Your default address is loaded. You can modify it below for this order only, or go to your <a href="{% url 'profile' %}">Profile</a> to permanently update it.
+                </div>
+                {% endif %}
+                <!-- Full Name -->
+                <div class="mb-3">
+                    <label for="{{ delivery_form.full_name.id_for_label }}" class="checkout-label">{{ delivery_form.full_name.label }}</label>
+                    {{ delivery_form.full_name }}
+                </div>
+
+                <!-- Phone Number -->
+                <div class="mb-3">
+                    <label for="{{ delivery_form.phone_number.id_for_label }}" class="checkout-label">{{ delivery_form.phone_number.label }}</label>
+                    {{ delivery_form.phone_number }}
+                </div>
+
+                <!-- Province and District -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ delivery_form.province.id_for_label }}" class="checkout-label">{{ delivery_form.province.label }}</label>
+                        {{ delivery_form.province }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ delivery_form.district.id_for_label }}" class="checkout-label">{{ delivery_form.district.label }}</label>
+                        {{ delivery_form.district }}
+                    </div>
+                </div>
+
+                <!-- Location/City -->
+                <div class="mb-3">
+                    <label for="{{ delivery_form.location.id_for_label }}" class="checkout-label">{{ delivery_form.location.label }}</label>
+                    {{ delivery_form.location }}
+                </div>
+
+                <!-- Street Address -->
+                <div class="mb-3">
+                    <label for="{{ delivery_form.street_address.id_for_label }}" class="checkout-label">{{ delivery_form.street_address.label }}</label>
+                    {{ delivery_form.street_address }}
+                </div>
+
+                <!-- Landmark and Postal Code -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ delivery_form.landmark.id_for_label }}" class="checkout-label">{{ delivery_form.landmark.label }}</label>
+                        {{ delivery_form.landmark }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="{{ delivery_form.postal_code.id_for_label }}" class="checkout-label">{{ delivery_form.postal_code.label }}</label>
+                        {{ delivery_form.postal_code }}
+                    </div>
+                </div>
+
+                <!-- Set as Default Address -->
+                {% if not default_address %}
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="save_address" name="save_address">
+                        <label for="save_address" class="form-check-label checkout-label">
+                            <strong>Save this address to my profile for future orders</strong>
+                        </label>
+                    </div>
+                </div>
+                {% else %}
+                <input type="hidden" name="update_existing" value="true">
+                {% endif %}
+            
+                <button type="submit" name="proceed_to_payment" class="btn btn-primary-theme w-100" style="padding: 12px; border-radius: 5px; font-size: 16px; border: none;">Proceed to Payment</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

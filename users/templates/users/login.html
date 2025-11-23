@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'users/css/login_style.css' %}">
+</head>
+<body>
+  <header>
+    <img src="{% static 'users/images/yadav.jpg' %}" alt="Company Logo">
+    Yadav Cosmetics
+  </header>
+
+  <div class="login-container">
+    <h2>Please Login</h2>
+
+    <form method="POST" action="{% url 'login' %}">
+      {% csrf_token %}
+      {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="message">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+      <div class="input-container">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" placeholder="Enter your email">
+      </div>
+
+      <div class="input-container">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password">
+      </div>
+
+      <button class="btn-login" type="submit">Log In</button>
+    </form>
+
+    <div class="forgot-password" style="text-align: center; margin: 12px 0;">
+      <a href="{% url 'password_reset' %}" style="color: #666; font-size: 14px;">Forgot password?</a>
+    </div>
+
+    <div class="signup">
+      Don't have an account? <a href="{% url 'register' %}">Sign up</a>
+    </div>
+
+    <div class="social-login">
+      <a href="{% url 'google_login' %}" class="google-login-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" width="20" style="margin-right: 8px;">
+        Continue with Google
+      </a>
+    </div>
+  </div>
+</body>
+</html>

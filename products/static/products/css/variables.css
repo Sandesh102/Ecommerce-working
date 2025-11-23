@@ -1,0 +1,23 @@
+/* Global Color Variables - Modern Green Theme */
+:root {
+    --tea-green: #c5efcbff;
+    --reseda-green: #647a67ff;
+    --black: #020402ff;
+    --eerie-black: #1f241fff;
+    --black-olive: #3c433bff;
+    --reseda-green-2: #758173ff;
+    --cambridge-blue: #8fa38aff;
+    --celadon: #a9c5a0ff;
+    --celadon-2: #b8d2b3ff;
+    --tea-green-2: #c6dec6ff;
+    
+    /* Modern additions */
+    --primary-gradient: linear-gradient(135deg, #647a67 0%, #758173 100%);
+    --secondary-gradient: linear-gradient(135deg, #a9c5a0 0%, #c5efcb 100%);
+    --card-shadow: 0 4px 20px rgba(100, 122, 103, 0.1);
+    --card-shadow-hover: 0 8px 30px rgba(100, 122, 103, 0.2);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius-md: 16px;
+    --border-radius-lg: 24px;
+}
+

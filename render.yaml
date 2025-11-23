@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: ecommerce-app
+    env: python
+    pythonVersion: "3.13.4"
+    buildCommand: "bash build.sh"
+    startCommand: "gunicorn ecommerce.wsgi:application --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: SECRET_KEY
+        sync: false
+      - key: DEBUG
+        value: False
+      - key: DB_ENGINE
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 5432
+      - key: WEB_COMMAND
+        value: "gunicorn ecommerce.wsgi:application --bind 0.0.0.0:$PORT"
+    disk:
+      name: media-storage
+      mountPath: /opt/render/project/src/media
+      sizeGB: 1
+
+databases:
+  - name: ecommerce-db
+    databaseName: ecommerce_db
+    user: ecommerce_user

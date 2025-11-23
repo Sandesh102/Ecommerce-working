@@ -1,0 +1,142 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Ecommerce</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'products/css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'products/css/theme.css' %}">
+    <link rel="stylesheet" href="{% static 'products/css/payment.css' %}">
+</head>
+<body>
+    <div class="payment-container">
+        <h2 class="payment-header">Complete Your Payment</h2>
+
+        <!-- Display Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Delivery Address -->
+        <div class="address-card">
+            <h5 class="heading-green" style="margin-bottom: 15px;">📍 Delivery Address</h5>
+            <p><strong>Name:</strong> {{ delivery_address.full_name }}</p>
+            <p><strong>Phone:</strong> {{ delivery_address.phone_number }}</p>
+            <p><strong>Address:</strong> {{ delivery_address.street_address }}, {{ delivery_address.location }}, {{ delivery_address.district }}, {{ delivery_address.province }}</p>
+            {% if delivery_address.landmark %}
+                <p><strong>Landmark:</strong> {{ delivery_address.landmark }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Order Summary -->
+        <div class="address-card">
+            <h5 class="heading-green" style="margin-bottom: 15px;">🛒 Order Summary</h5>
+            {% for item in cart_items %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>{{ item.product.name }} (x{{ item.quantity }})</span>
+                    <span>Rs. {{ item.product.price }}</span>
+                </div>
+            {% endfor %}
+            <hr>
+            <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold;">
+                <span>Total:</span>
+                <span class="text-green">Rs. {{ total_price }}</span>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <h5 class="heading-green" style="margin-bottom: 20px;">Select Payment Method</h5>
+
+        <!-- QR Code Payment Method -->
+        <div class="payment-method-card" id="qr-method" onclick="selectPaymentMethod('qr')">
+            <input type="radio" name="payment_method" value="qr" id="qr-radio" style="margin-right: 10px;">
+            <label for="qr-radio" style="cursor: pointer; margin: 0;">
+                <strong>💳 QR Code Payment</strong>
+                <p>Scan QR code and upload payment proof</p>
+            </label>
+            
+            <div id="qr-section" style="display: none;">
+                <div class="qr-section">
+                    <p><strong>Scan this QR code to make payment</strong></p>
+                    <img src="{% static 'products/images/qr.jpg' %}" alt="Payment QR Code">
+                    <small>After payment, upload the screenshot or receipt below</small>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_method" value="qr">
+                    
+                    <div class="mb-3">
+                        <label for="payment_proof" class="form-label payment-form-label">Upload Payment Proof *</label>
+                        <input type="file" name="payment_proof" id="payment_proof" class="form-control" required accept="image/*,.pdf">
+                        <small class="text-muted">Accepted formats: Images, PDF</small>
+                    </div>
+
+                    <button type="submit" class="btn payment-btn-primary w-100">Complete Order</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Khalti Payment Method -->
+        <div class="payment-method-card" id="khalti-method" onclick="selectPaymentMethod('khalti')">
+            <input type="radio" name="payment_method" value="khalti" id="khalti-radio" style="margin-right: 10px;">
+            <label for="khalti-radio" style="cursor: pointer; margin: 0;">
+                <strong>🟣 Khalti Payment</strong>
+                <p>Pay securely with Khalti digital wallet</p>
+            </label>
+            
+            <div id="khalti-section" style="display: none; margin-top: 20px;">
+                <form method="POST" action="{% url 'payment' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_method" value="khalti">
+                    
+                    <button type="submit" class="khalti-btn">
+                        <img src="https://web.khalti.com/static/img/logo1.png" alt="Khalti">
+                        Pay Rs. {{ total_price }} with Khalti
+                    </button>
+                    
+                    <p class="khalti-redirect-text">
+                        You will be redirected to Khalti payment gateway
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <a href="{% url 'checkout' %}" class="btn btn-outline-secondary payment-back-btn">« Back to Delivery Info</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function selectPaymentMethod(method) {
+            // Reset all cards
+            document.querySelectorAll('.payment-method-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Hide all sections
+            document.getElementById('qr-section').style.display = 'none';
+            document.getElementById('khalti-section').style.display = 'none';
+            
+            // Activate selected method
+            if (method === 'qr') {
+                document.getElementById('qr-method').classList.add('active');
+                document.getElementById('qr-radio').checked = true;
+                document.getElementById('qr-section').style.display = 'block';
+            } else if (method === 'khalti') {
+                document.getElementById('khalti-method').classList.add('active');
+                document.getElementById('khalti-radio').checked = true;
+                document.getElementById('khalti-section').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

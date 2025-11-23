@@ -1,0 +1,54 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'products/css/checkout.css' %}">
+{% endblock %}
+
+{% block start %}
+<div class="container py-4 checkout-success-container">
+    <!-- Title -->
+    <h2 class="heading-green" style="text-align: center; font-size: 30px; margin-bottom: 20px;">Checkout Successful</h2>
+    <p style="text-align: center; font-size: 18px; color: #555;">
+        
+        <span>For full details and live updates, please check your Profile.</span>
+    </p>
+    <div style="text-align: center; margin-top: 10px;">
+        <a href="{% url 'profile' %}" class="btn btn-primary-theme" style="padding: 10px 15px; text-decoration: none; border-radius: 5px;">Go to Profile</a>
+        <a href="/" class="btn btn-primary-theme" style="margin-left: 8px; padding: 10px 15px; text-decoration: none; border-radius: 5px;">Continue Shopping</a>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="order-summary bg-light-green" style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <h5 class="heading-green heading-border-green" style="padding-bottom: 10px;">Order Summary</h5>
+        <ul style="font-size: 16px; color: #555;">
+            <li><strong>Order ID:</strong> {{ order.id }}</li>
+            <li><strong>Delivery Address:</strong> {{ order.delivery_address }}</li>
+            <li><strong>Phone Number:</strong> {{ order.phone_number }}</li>
+            <li><strong>Total Price:</strong> Rs. {{ order.total_price }}</li>
+            <li><strong>Status:</strong> {{ order.status }}</li>
+        </ul>
+    </div>
+
+    <!-- Payment Details -->
+    <div class="payment-details bg-light-green" style="padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-top: 20px;">
+        <h5 class="heading-green heading-border-green" style="padding-bottom: 10px;">Payment Details</h5>
+        {% if order.payment_status == 'Paid' %}
+            <p style="font-size: 16px; color: #2e7d32;"><strong>Payment Method:</strong> Khalti (auto-confirmed)</p>
+            <p style="font-size: 16px; color: #2e7d32;">Payment has been confirmed automatically by Khalti.</p>
+        {% elif order.payment_status == 'Fake Screenshot' %}
+            <p style="font-size: 16px; color: #c62828;"><strong>Payment Method:</strong> QR/Screenshot Upload</p>
+            <p style="font-size: 16px; color: #c62828;">Marked as Fake Screenshot by admin. Order failed.</p>
+        {% else %}
+            <p style="font-size: 16px; color: #b26a00;"><strong>Payment Method:</strong> QR/Screenshot Upload</p>
+            <p style="font-size: 16px; color: #b26a00;">Awaiting manual verification. You can track status in your Profile.</p>
+        {% endif %}
+        {% if order.payment_proof %}
+            <p style="font-size: 16px; color: #555;"><strong>Payment Proof Uploaded:</strong> Yes</p>
+            <p><a href="{{ order.payment_proof.url }}" target="_blank" class="btn btn-primary-theme" style="padding: 10px 15px; text-decoration: none; border-radius: 5px;">View Payment Proof</a></p>
+        {% else %}
+            <p style="font-size: 16px; color: #555;"><strong>Payment Proof Uploaded:</strong> No</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

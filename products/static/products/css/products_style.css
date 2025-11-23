@@ -1,0 +1,346 @@
+/* Import color variables */
+@import url('variables.css');
+
+/* Grid container */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  padding: 20px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Remove underline from product links */
+.product-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-link:hover {
+  text-decoration: none;
+}
+
+/* Individual product card - Modern transparent design */
+.product {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(169, 197, 160, 0.3);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 340px;
+  box-shadow: 0 4px 16px rgba(100, 122, 103, 0.08);
+  transition: var(--transition-smooth);
+  position: relative;
+}
+
+/* Add subtle gradient overlay */
+.product::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 0%, rgba(169, 197, 160, 0.05) 100%);
+  opacity: 0;
+  transition: var(--transition-smooth);
+  pointer-events: none;
+  border-radius: var(--border-radius-md);
+}
+
+/* Hover effect for product card */
+.product:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(100, 122, 103, 0.18);
+  border-color: rgba(100, 122, 103, 0.4);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.product:hover::before {
+  opacity: 1;
+}
+
+/* Image container */
+.product img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  margin: 0 auto 15px auto;
+  display: block;
+  flex-shrink: 0;
+  transition: var(--transition-smooth);
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.product:hover img {
+  transform: scale(1.08);
+}
+
+.product h2 {
+  font-size: 16px;
+  margin: 12px 0 8px 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  color: var(--eerie-black);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 24px;
+  line-height: 24px;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+/* Price */
+.price {
+  color: var(--reseda-green);
+  font-weight: 700;
+  margin: 8px 0;
+  font-size: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.discount {
+  color: var(--cambridge-blue);
+  font-size: 14px;
+}
+
+/* Section headings */
+.heading-green {
+  color: var(--reseda-green);
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin: 30px 0 20px 40px;
+  padding-left: 15px;
+  border-left: 5px solid var(--reseda-green);
+  position: relative;
+  display: inline-block;
+}
+
+.heading-green::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 15px;
+  width: 60%;
+  height: 3px;
+  background: var(--secondary-gradient);
+  border-radius: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 20px 30px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 20px;
+    gap: 18px;
+  }
+  
+  .heading-green {
+    font-size: 1.5rem;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .product {
+    height: 300px;
+    padding: 15px;
+  }
+
+  .product img {
+    height: 160px;
+  }
+  
+  .heading-green {
+    font-size: 1.3rem;
+    margin-left: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+  
+  .product {
+    height: auto;
+    min-height: 280px;
+  }
+}
+
+/* Horizontal Filter Form Styles */
+.filter-container {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius-md);
+  padding: 20px 24px;
+  box-shadow: 0 4px 20px rgba(100, 122, 103, 0.12);
+  margin: 20px 40px 30px 40px;
+  border: 1px solid rgba(169, 197, 160, 0.3);
+}
+
+.filter-form-horizontal {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  min-width: 140px;
+}
+
+.filter-item.filter-search {
+  flex: 1 1 220px;
+  min-width: 220px;
+}
+
+.filter-item.filter-actions {
+  flex: 0 0 auto;
+  min-width: auto;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--reseda-green);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.filter-select,
+.filter-input {
+  padding: 10px 14px;
+  border: 2px solid rgba(169, 197, 160, 0.4);
+  border-radius: 10px;
+  font-size: 14px;
+  transition: var(--transition-smooth);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--eerie-black);
+  width: 100%;
+  height: 42px;
+  font-weight: 500;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  outline: none;
+  border-color: var(--reseda-green);
+  box-shadow: 0 0 0 4px rgba(100, 122, 103, 0.15);
+  background: white;
+}
+
+.filter-select:hover,
+.filter-input:hover {
+  border-color: var(--reseda-green-2);
+}
+
+.filter-actions {
+  display: flex;
+  gap: 12px;
+  flex: 0 0 auto;
+  min-width: auto;
+}
+
+.filter-btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  height: 42px;
+  letter-spacing: 0.5px;
+}
+
+.filter-btn-apply {
+  background: var(--primary-gradient);
+  color: white;
+  box-shadow: 0 4px 16px rgba(100, 122, 103, 0.25);
+}
+
+.filter-btn-apply:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(100, 122, 103, 0.35);
+}
+
+.filter-btn-clear {
+  background: white;
+  color: var(--reseda-green);
+  border: 2px solid var(--reseda-green);
+}
+
+.filter-btn-clear:hover {
+  background: var(--reseda-green);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(100, 122, 103, 0.2);
+}
+
+/* Responsive adjustments for filter */
+@media (max-width: 992px) {
+  .filter-container {
+    margin: 20px 20px 30px 20px;
+  }
+  
+  .filter-form-horizontal {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-item {
+    min-width: 100%;
+  }
+  
+  .filter-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    padding: 16px;
+    margin: 15px;
+  }
+  
+  .filter-btn {
+    flex: 1;
+  }
+}

@@ -1,0 +1,144 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block start %}
+<html>
+  <head>
+    <link rel="stylesheet" href="{% static 'products/css/products_style.css' %}">
+  </head>
+  <body>
+    <div class="container py-4">
+      <!-- Filter Form - Horizontal Style -->
+      <div class="filter-container mb-4">
+        <form method="GET" action="{% url 'category' %}" class="filter-form-horizontal">
+          <!-- Category Filter -->
+          <div class="filter-item">
+            <label for="category" class="filter-label">Category</label>
+            <select name="category" id="category" class="filter-select">
+              <option value="">All Categories</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:'s' %}selected{% endif %}>{{ category.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Sorting -->
+          <div class="filter-item">
+            <label for="sort" class="filter-label">Sort By</label>
+            <select name="sort" id="sort" class="filter-select">
+              <option value="">Default</option>
+              <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+              <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest</option>
+              <option value="popular" {% if sort == 'popular' %}selected{% endif %}>Popular</option>
+            </select>
+          </div>
+
+          <!-- Search Field -->
+          <div class="filter-item filter-search">
+            <label for="search" class="filter-label">Search</label>
+            <input type="text" name="q" id="search" class="filter-input" placeholder="Search products..." value="{{ request.GET.q }}">
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="filter-item filter-actions">
+            <button type="submit" class="filter-btn filter-btn-apply">Apply</button>
+            <a href="{% url 'category' %}" class="filter-btn filter-btn-clear">Clear</a>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Category-Based Recommendations (10 items) -->
+      {% if selected_category and recommended_category_products %}
+      <h4 class="heading-green">Recommended for {{ selected_category.name }}</h4>
+      <div class="product-grid mb-4">
+        {% for product in recommended_category_products %}
+        <a href="{% url 'product_detail' product.slug %}" class="product-link">
+          <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name|replace_underscore }}">
+            <h2>{{ product.name|replace_underscore }}</h2>
+            <p class="price">Rs{{ product.price }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      
+      <!-- Next Category Section -->
+      {% if next_category %}
+      <div class="mb-4 bg-light-green" style="text-align: center; padding: 20px; border-radius: 8px;">
+        <h5 class="heading-green" style="margin-bottom: 15px;">Explore Next Category</h5>
+        <a href="{% url 'category' %}?category={{ next_category.id }}" class="btn btn-primary btn-primary-theme" style="padding: 10px 30px;">
+          Browse {{ next_category.name }}
+        </a>
+      </div>
+      {% endif %}
+      {% endif %}
+      
+      <!-- Personalized Recommendations (10 items based on behavior) -->
+      {% if personalized_products %}
+      <h4 class="heading-green">Based on Your Interests</h4>
+      <div class="product-grid mb-4">
+        {% for product in personalized_products %}
+        <a href="{% url 'product_detail' product.slug %}" class="product-link">
+          <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name|replace_underscore }}">
+            <h2>{{ product.name|replace_underscore }}</h2>
+            <p class="price">Rs{{ product.price }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+  
+      <!-- Display Products by Category (when no category selected) -->
+      {% if not selected_category %}
+        {% for category_obj, products in products_by_category.items %}
+          {% if products %}
+          <h4 class="heading-green">{{ category_obj.name }}</h4>
+          <div class="product-grid mb-4">
+            {% for product in products %}
+            <a href="{% url 'product_detail' product.slug %}" class="product-link">
+              <div class="product">
+                <img src="{{ product.image.url }}" alt="{{ product.name|replace_underscore }}">
+                <h2>{{ product.name|replace_underscore }}</h2>
+                <p class="price">Rs{{ product.price }}</p>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <!-- Display filtered products for selected category -->
+        {% if selected_category %}
+        <h4 class="heading-green">{{ selected_category.name }} Products</h4>
+        {% elif query %}
+        <h4 class="heading-green">Search Results for "{{ query }}"</h4>
+        {% else %}
+        <h4 class="heading-green">All Products</h4>
+        {% endif %}
+        <div class="product-grid">
+          {% for product in all_products %}
+          <a href="{% url 'product_detail' product.slug %}" class="product-link">
+            <div class="product">
+              <img src="{{ product.image.url }}" alt="{{ product.name|replace_underscore }}">
+              <h2>{{ product.name|replace_underscore }}</h2>
+              <p class="price">Rs{{ product.price }}</p>
+            </div>
+          </a>
+          {% empty %}
+          <div style="text-align: center; padding: 40px; color: var(--reseda-green-2);">
+            <p>No products found matching your filters.</p>
+            <a href="{% url 'category' %}" class="btn btn-primary btn-primary-theme" style="margin-top: 10px;">
+              Clear Filters
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </body>
+  
+</html>
+{% endblock %}

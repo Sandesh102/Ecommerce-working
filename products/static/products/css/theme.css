@@ -1,0 +1,133 @@
+/* Theme Utility Classes - Modern Green Palette */
+@import url('variables.css');
+
+/* Button Styles */
+.btn-primary-theme {
+    background: var(--primary-gradient) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 12px 24px !important;
+    border-radius: 10px !important;
+    transition: var(--transition-smooth) !important;
+    box-shadow: 0 4px 16px rgba(100, 122, 103, 0.25) !important;
+}
+
+.btn-primary-theme:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(100, 122, 103, 0.35) !important;
+    color: white !important;
+}
+
+.btn-secondary-theme {
+    background: var(--secondary-gradient) !important;
+    border: none !important;
+    color: var(--eerie-black) !important;
+    font-weight: 600 !important;
+    padding: 12px 24px !important;
+    border-radius: 10px !important;
+    transition: var(--transition-smooth) !important;
+}
+
+.btn-secondary-theme:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(169, 197, 160, 0.3) !important;
+}
+
+/* Heading Colors */
+.heading-green {
+    color: var(--reseda-green) !important;
+    font-weight: 700 !important;
+}
+
+.heading-border-green {
+    border-bottom: 3px solid var(--reseda-green) !important;
+    padding-bottom: 12px !important;
+}
+
+/* Background Colors */
+.bg-light-green {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.bg-gradient-green {
+    background: var(--secondary-gradient) !important;
+}
+
+/* Text Colors */
+.text-green {
+    color: var(--reseda-green) !important;
+    font-weight: 600 !important;
+}
+
+.text-dark-green {
+    color: var(--black-olive) !important;
+}
+
+/* Border Colors */
+.border-green {
+    border-color: rgba(169, 197, 160, 0.4) !important;
+}
+
+.border-green-dark {
+    border-color: var(--reseda-green) !important;
+}
+
+/* Card Styles */
+.card-modern {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(169, 197, 160, 0.3) !important;
+    border-radius: var(--border-radius-md) !important;
+    box-shadow: var(--card-shadow) !important;
+    transition: var(--transition-smooth) !important;
+}
+
+.card-modern:hover {
+    box-shadow: var(--card-shadow-hover) !important;
+    transform: translateY(-4px) !important;
+}
+
+/* Container improvements */
+.container,
+.container-fluid {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--celadon);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--reseda-green);
+}
+

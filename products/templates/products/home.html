@@ -1,0 +1,76 @@
+{% extends 'products/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block start %}
+<html>
+  <head>
+    <link rel="stylesheet" href="{% static 'products/css/products_style.css' %}">
+  </head>
+  <body>
+    <div class="container py-3">
+      {% if recommended_products %}
+      <h4 class="heading-green">Recommended for you</h4>
+      <div class="product-grid mb-4">
+        {% for product in recommended_products %}
+        <a href="{% url 'product_detail' product.slug %}" class="product-link">
+          <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h2>{{ product.name|replace_underscore }}</h2>
+            <p class="price">Rs{{ product.price }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+      
+      <!-- Trending Products Section -->
+      {% if trending_products %}
+      <h4 class="heading-green">Trending Items</h4>
+      <div class="product-grid mb-4">
+        {% for product in trending_products %}
+        <a href="{% url 'product_detail' product.slug %}" class="product-link">
+          <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name|replace_underscore }}">
+            <h2>{{ product.name|replace_underscore }}</h2>
+            <p class="price">Rs{{ product.price }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+      
+      <!-- Products by Category -->
+      {% if products_by_category %}
+        {% for category_obj, products in products_by_category.items %}
+          {% if products %}
+          <h4 class="heading-green">{{ category_obj.name }}</h4>
+          <div class="product-grid mb-4">
+            {% for product in products %}
+            <a href="{% url 'product_detail' product.slug %}" class="product-link">
+              <div class="product">
+                <img src="{{ product.image.url }}" alt="{{ product.name|replace_underscore }}">
+                <h2>{{ product.name|replace_underscore }}</h2>
+                <p class="price">Rs{{ product.price }}</p>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+      <div class="product-grid">
+        {% for product in products %}
+        <a href="{% url 'product_detail' product.slug %}" class="product-link">
+          <div class="product">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h2>{{ product.name|replace_underscore }}</h2>
+            <p class="price">Rs{{ product.price }}</p>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
+{% endblock %}

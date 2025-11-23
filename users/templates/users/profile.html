@@ -1,0 +1,244 @@
+{% extends 'products/base.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'products/css/variables.css' %}">
+<link rel="stylesheet" href="{% static 'products/css/theme.css' %}">
+
+{% block start %}
+<div class="container py-5">
+    <div class="row">
+        <!-- User Info Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    {% if user_profile and user_profile.profile_picture %}
+                        <img src="{{ user_profile.profile_picture.url }}" alt="Profile" class="rounded-circle mb-3" style="width: 100px; height: 100px; border: 3px solid #647a67ff; object-fit: cover;">
+                    {% else %}
+                        <img src="https://ui-avatars.com/api/?name={{ user.first_name }}+{{ user.last_name }}&background=647a67&color=fff&size=100" alt="Profile" class="rounded-circle mb-3" style="width: 100px; height: 100px; border: 3px solid #647a67ff;">
+                    {% endif %}
+                    <h3>{{ user.first_name }} {{ user.last_name }}</h3>
+                    <p class="text-muted">{{ user.email }}</p>
+                    {% if user_profile and user_profile.date_of_birth %}
+                        <p class="text-muted"><strong>Date of Birth:</strong> {{ user_profile.date_of_birth|date:"F d, Y" }}</p>
+                    {% endif %}
+                    {% if user_profile and user_profile.google_id %}
+                        <p class="text-muted"><small>Signed in with Google</small></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Messages -->
+        {% if messages %}
+            <div class="col-md-12">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Order History Section -->
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header" style="background-color: #647a67ff; color: white;">
+                    <h4 class="mb-0">📦 Order History</h4>
+                </div>
+                <div class="card-body">
+                    {% if orders %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead style="background-color: #c5efcbff;">
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Delivery Address</th>
+                                        <th>Total Amount</th>
+                                        <th>Payment Status</th>
+                                        <th>Order Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr>
+                                        <td><strong>#{{ order.id }}</strong></td>
+                                        <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                        <td>{{ order.delivery_address|truncatewords:10 }}</td>
+                                        <td><strong>Rs. {{ order.total_price }}</strong></td>
+                                        <td>
+                                            {% if order.payment_status == 'Paid' %}
+                                                <span class="badge bg-success">✓ Paid</span>
+                                            {% elif order.payment_status == 'Fake Screenshot' %}
+                                                <span class="badge bg-danger">⚠ Fake Screenshot</span>
+                                            {% else %}
+                                                <span class="badge bg-warning">⏳ Pending</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if order.status == 'Pending' %}
+                                                <span class="badge bg-warning">{{ order.status }}</span>
+                                            {% elif order.status == 'Order Confirmed' %}
+                                                <span class="badge bg-success">{{ order.status }}</span>
+                                            {% elif order.status == 'Processing' %}
+                                                <span class="badge bg-info">{{ order.status }}</span>
+                                            {% elif order.status == 'Shipped' %}
+                                                <span class="badge bg-primary">{{ order.status }}</span>
+                                            {% elif order.status == 'Delivered' %}
+                                                <span class="badge bg-success">{{ order.status }}</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">{{ order.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-center text-muted">No orders yet. Start shopping!</p>
+                        <div class="text-center">
+                            <a href="/" class="btn btn-primary btn-primary-theme" style="border: none;">Browse Products</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Addresses Section -->
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header" style="background-color: #647a67ff; color: white;">
+                    <h4 class="mb-0">📍 Delivery Addresses</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Existing Addresses -->
+                    <div class="row mb-4">
+                        {% if delivery_addresses %}
+                            {% for address in delivery_addresses %}
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 {% if address.is_default %}border-primary{% endif %}">
+                                    <div class="card-body">
+                                        {% if address.is_default %}
+                                            <span class="badge bg-primary mb-2">Default Address</span>
+                                        {% endif %}
+                                        <h6><strong>{{ address.full_name }}</strong></h6>
+                                        <p class="mb-1">{{ address.street_address }}</p>
+                                        <p class="mb-1">{{ address.location }}, {{ address.district }}</p>
+                                        <p class="mb-1">{{ address.province }}{% if address.postal_code %}, {{ address.postal_code }}{% endif %}</p>
+                                        {% if address.landmark %}
+                                            <p class="mb-1 text-muted"><small>Landmark: {{ address.landmark }}</small></p>
+                                        {% endif %}
+                                        <p class="mb-3"><strong>Phone:</strong> {{ address.phone_number }}</p>
+                                        
+                                        <div class="d-flex gap-2">
+                                            {% if not address.is_default %}
+                                            <form method="POST" class="d-inline">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="address_id" value="{{ address.id }}">
+                                                <button type="submit" name="set_default" class="btn btn-sm btn-outline-primary">Set as Default</button>
+                                            </form>
+                                            {% endif %}
+                                            <a href="?edit={{ address.id }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                            <form method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this address?');">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="address_id" value="{{ address.id }}">
+                                                <button type="submit" name="delete_address" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-12">
+                                <p class="text-center text-muted">No delivery addresses saved yet.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Add/Edit Address Form -->
+                    {% if edit_address %}
+                    <div class="alert alert-warning">
+                        <strong>Editing Address:</strong> {{ edit_address.full_name }} - {{ edit_address.location }}
+                        <a href="{% url 'profile' %}" class="btn btn-sm btn-secondary float-end">Cancel</a>
+                    </div>
+                    {% else %}
+                    <button class="btn btn-primary btn-primary-theme mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#addAddressForm" style="border: none;">
+                        ➕ Add New Address
+                    </button>
+                    {% endif %}
+                    
+                    <div class="{% if not edit_address %}collapse{% endif %}" id="addAddressForm">
+                        <div class="card card-body">
+                            <form method="POST">
+                                {% csrf_token %}
+                                {% if edit_address %}
+                                <input type="hidden" name="address_id" value="{{ edit_address.id }}">
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Full Name</label>
+                                        {{ form.full_name }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        {{ form.phone_number }}
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Province/State</label>
+                                        {{ form.province }}
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">District</label>
+                                        {{ form.district }}
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">City/Municipality</label>
+                                        {{ form.location }}
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">Street Address</label>
+                                        {{ form.street_address }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Landmark (Optional)</label>
+                                        {{ form.landmark }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Postal Code (Optional)</label>
+                                        {{ form.postal_code }}
+                                    </div>
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-check">
+                                            {{ form.is_default }}
+                                            <label class="form-check-label">
+                                                Set as default address
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if edit_address %}
+                                <button type="submit" name="update_address" class="btn btn-primary btn-primary-theme" style="border: none;">Update Address</button>
+                                <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+                                {% else %}
+                                <button type="submit" name="add_address" class="btn btn-success">Save Address</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 10px;
+    }
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}

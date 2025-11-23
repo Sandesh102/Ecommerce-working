@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yadav Cosmetics</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'users/css/base_style.css' %}">
+  <link rel="stylesheet" href="{% static 'products/css/theme.css' %}">
+  <link rel="stylesheet" href="{% static 'products/css/base_footer.css' %}">
+  {% block css %}
+  {% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{% static 'products/images/yadav.jpg' %}" alt="Yadav Cosmetics Logo">
+                <span class="ms-2">Yadav Cosmetics</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category' %}">Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cart' %}">🛒 Cart</a>
+                </li>
+            </ul>
+                <div class="extra-links d-flex align-items-center ms-auto" style="gap: 12px;">
+                    <a href="{% url 'help' %}">Help and Support</a>
+                    <!-- Search Bar (responsive) -->
+                    <div class="search-wrap position-relative flex-grow-1" style="max-width: 360px;">
+                        <div class="input-group">
+                            <input id="globalSearch" type="text" class="form-control" placeholder="Search products..." autocomplete="off">
+                            <button id="globalSearchBtn" class="btn btn-light" type="button">Search</button>
+                        </div>
+                        <div id="searchSuggestions" class="list-group search-suggestions"></div>
+                    </div>
+                </div>
+                
+                <!-- User Authentication Section -->
+                <div class="d-flex align-items-center ms-3">
+                    <!-- Debug: User Auth Status (Remove after debugging) -->
+                    <!-- User: {{ user }} | Authenticated: {{ user.is_authenticated }} -->
+                    
+                    {% if user.is_authenticated %}
+                        <!-- Profile Dropdown -->
+                        <div class="dropdown">
+                            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="color: white; cursor: pointer;">
+                                <img src="https://ui-avatars.com/api/?name={{ user.first_name|default:'User' }}+{{ user.last_name|default:'' }}&background=647a67&color=fff&size=40" alt="Profile" class="rounded-circle me-2" style="width: 40px; height: 40px; border: 2px solid white;">
+                                <span class="d-none d-md-inline">{{ user.first_name|default:'User' }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown" style="min-width: 200px;">
+                                <li class="px-3 py-2 border-bottom">
+                                    <div class="text-muted" style="font-size: 12px;">Signed in as</div>
+                                    <div style="font-weight: bold;">{{ user.email|default:user.username }}</div>
+                                </li>
+                                <li><a class="dropdown-item py-2" href="{% url 'profile' %}">👤 View Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item py-2" href="{% url 'logout' %}">🚪 Logout</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <!-- Login and Register Buttons -->
+                        <a href="{% url 'login' %}" class="btn btn-outline-light me-2" style="font-size: 14px;">Login</a>
+                        <a href="{% url 'register' %}" class="btn btn-light" style="font-size: 14px;">Register</a>
+                    {% endif %}
+                </div>
+              
+            </div>
+        </div>
+    </nav>
+
+    {% block start %}
+    {% endblock %}
+      <footer class="footer-custom">
+        <div class="footer-container">
+          <div class="footer-section">
+            <h3>About Us</h3>
+            <p>
+              Yadav Cosmetics was born in 2014. A beauty brand store is one of the first in Nepal. Yadav Cosmetics has grown to become the largest Nepali beauty retailer and the premier beauty destination for those looking for killer makeup without killing their wallet.
+            </p>
+            <div class="icon-bar d-flex align-items-center">
+              <a href="https://www.facebook.com/" target="_blank">
+                  <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" class="social-icon">
+              </a>
+              <a href="https://www.instagram.com/" target="_blank">
+                  <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram" class="social-icon">
+              </a>
+          </div>
+          </div>
+      
+          <div class="footer-section">
+            <h3>Store Information</h3>
+            <ul>
+              <li>Trademall, Pokhara (+977-9814150244)</li>
+              <li>Baneshwor, Kathmandu</li>
+              <li>Putali Line, Dharan</li>
+              <li>Kumaripati, Kathmandu</li>
+            </ul>
+            <p style="margin-top: 10px;"><strong>Phone:</strong> +977-9813319958</p>
+            <p><strong>Email:</strong> yadavcosmetics@gmail.com</p>
+          </div>
+      
+      
+          <div class="footer-section">
+            <h3>Help & Support</h3>
+            <ul>
+              <li><a href="#">FAQs</a></li>
+              <li><a href="#">Wishlist</a></li>
+              <li><a href="{% url 'cart' %}">🛒 My Cart</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-divider">
+          <p>&copy; 2024 Yadav Cosmetics</p>
+        </div>
+      </footer>
+      
+    
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+        const input = document.getElementById('globalSearch');
+        const btn = document.getElementById('globalSearchBtn');
+        const sugg = document.getElementById('searchSuggestions');
+        function hideSuggestions(){sugg.style.display='none';}
+        function showSuggestions(){sugg.style.display='block';}
+        input && input.addEventListener('input', async (e)=>{
+          const q = e.target.value.trim();
+          if(!q){ hideSuggestions(); sugg.innerHTML=''; return; }
+          try{
+            const res = await fetch(`/search/suggestions/?q=${encodeURIComponent(q)}`);
+            const data = await res.json();
+            sugg.innerHTML = (data.results||[]).map(r=>
+              `<a href="/product/${r.slug}/" class="list-group-item list-group-item-action d-flex align-items-center">
+                 <img src="${r.image}" alt="" style="width:32px;height:32px;object-fit:cover;margin-right:8px;">
+                 <span class="flex-grow-1">${r.name}</span>
+                 <span class="text-muted">Rs. ${r.price}</span>
+               </a>`
+            ).join('');
+            if(data.results && data.results.length){ showSuggestions(); } else { hideSuggestions(); }
+          }catch(err){ hideSuggestions(); }
+        });
+        btn && btn.addEventListener('click', ()=>{
+          const q = input.value.trim();
+          window.location.href = `/search/?q=${encodeURIComponent(q)}`;
+        });
+        document.addEventListener('click', (ev)=>{
+          if(!sugg.contains(ev.target) && ev.target!==input){ hideSuggestions(); }
+        });
+      </script>
+    </body>
+</html>

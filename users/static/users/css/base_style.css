@@ -1,0 +1,142 @@
+/* Import color variables */
+@import url('../../products/css/variables.css');
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--tea-green-2);
+}
+.navbar-custom,
+.navbar.navbar-custom,
+nav.navbar.navbar-custom {
+    background-color: var(--reseda-green) !important;
+    background: var(--reseda-green) !important;
+    color: white;
+    padding: 5px 10px;
+}
+
+.navbar.navbar-expand-lg.navbar-custom {
+    background-color: var(--reseda-green) !important;
+    background: var(--reseda-green) !important;
+}
+
+.navbar-brand img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    font-size: 15px;
+    padding: 10px 15px; 
+    font-weight: bold; 
+}
+
+.navbar-nav .nav-link:hover {
+    text-decoration: underline;
+}
+
+.navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.form-control {
+    border-radius: 5px;
+    height: 35px;
+    font-size: 14px;
+}
+.btn-search {
+    background-color: white;
+    color: var(--reseda-green);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.btn-search:hover {
+    background-color: var(--celadon-2);
+}
+.icon-bar img {
+    height: 30px;
+    width: 30px;
+}
+.icon-bar a {
+    margin-left: 10px;
+}
+.extra-links {
+    margin-right: 15px;
+    font-size: 14px;
+}
+.extra-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
+.extra-links a:hover {
+    text-decoration: underline;
+}
+footer {
+    background-color: var(--reseda-green);
+    color: white;
+    padding: 20px 0;
+}
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    border-radius: 8px;
+    border: 1px solid var(--celadon);
+    background-color: white;
+}
+
+.dropdown-item {
+    font-size: 14px;
+    padding: 10px 15px;
+}
+
+.dropdown-item:hover {
+    background-color: var(--tea-green);
+    color: var(--reseda-green);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar-brand img {
+        height: 50px;
+        width: 50px;
+    }
+    
+    .navbar-nav .nav-link {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+    
+    .btn-outline-light, .btn-light {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+    
+    .extra-links {
+        margin: 10px 0;
+    }
+    
+    footer {
+        font-size: 14px;
+    }
+    
+    .dropdown-menu {
+        min-width: 180px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand span {
+        font-size: 16px;
+    }
+    
+    .container-fluid {
+        padding: 0 10px;
+    }
+} 

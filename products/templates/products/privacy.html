@@ -1,0 +1,95 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 40px auto; padding: 20px;">
+    <h1 style="color: #333; margin-bottom: 20px;">Privacy Policy</h1>
+    <p style="color: #666; margin-bottom: 30px;"><strong>Last Updated:</strong> November 9, 2025</p>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">1. Information We Collect</h2>
+        <p style="line-height: 1.6; color: #555;">
+            We collect information you provide directly to us when you:
+        </p>
+        <ul style="line-height: 1.8; color: #555; margin-left: 20px;">
+            <li>Create an account (name, email, password)</li>
+            <li>Sign in with Google (name, email, profile picture, date of birth if available)</li>
+            <li>Place an order (delivery address, payment information)</li>
+            <li>Browse our products (browsing history, cart items)</li>
+        </ul>
+    </section>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">2. How We Use Your Information</h2>
+        <p style="line-height: 1.6; color: #555;">
+            We use the information we collect to:
+        </p>
+        <ul style="line-height: 1.8; color: #555; margin-left: 20px;">
+            <li>Process and fulfill your orders</li>
+            <li>Communicate with you about your account and orders</li>
+            <li>Improve our products and services</li>
+            <li>Personalize your shopping experience</li>
+            <li>Comply with legal obligations</li>
+        </ul>
+    </section>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">3. Google OAuth Information</h2>
+        <p style="line-height: 1.6; color: #555;">
+            When you sign in with Google, we access:
+        </p>
+        <ul style="line-height: 1.8; color: #555; margin-left: 20px;">
+            <li>Your Google profile information (name, email)</li>
+            <li>Your profile picture</li>
+            <li>Your date of birth (if available and you grant permission)</li>
+        </ul>
+        <p style="line-height: 1.6; color: #555; margin-top: 10px;">
+            We use this information solely for account creation and authentication. We do not share your Google information with third parties.
+        </p>
+    </section>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">4. Data Security</h2>
+        <p style="line-height: 1.6; color: #555;">
+            We implement appropriate security measures to protect your personal information. However, no method of transmission over the Internet is 100% secure.
+        </p>
+    </section>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">5. Your Rights</h2>
+        <p style="line-height: 1.6; color: #555;">You have the right to:</p>
+        <ul style="line-height: 1.8; color: #555; margin-left: 20px;">
+            <li>Access your personal information</li>
+            <li>Correct inaccurate information</li>
+            <li>Request deletion of your account and data</li>
+            <li>Opt out of marketing communications</li>
+        </ul>
+    </section>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">6. Cookies</h2>
+        <p style="line-height: 1.6; color: #555;">
+            We use cookies to maintain your session and improve your browsing experience. You can disable cookies in your browser settings, but this may affect site functionality.
+        </p>
+    </section>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">7. Changes to This Policy</h2>
+        <p style="line-height: 1.6; color: #555;">
+            We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page.
+        </p>
+    </section>
+
+    <section style="margin-bottom: 30px;">
+        <h2 style="color: #444; margin-bottom: 15px;">8. Contact Us</h2>
+        <p style="line-height: 1.6; color: #555;">
+            If you have questions about this privacy policy, please contact us at:
+            <br><strong>Email:</strong> <a href="mailto:sandeshsubedi103@gmail.com">sandeshsubedi103@gmail.com</a>
+        </p>
+    </section>
+
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="{% url 'homepage' %}" style="color: #007bff; text-decoration: none;">← Back to Home</a>
+    </div>
+</div>
+{% endblock %}
