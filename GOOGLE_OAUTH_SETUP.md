@@ -67,7 +67,6 @@ Google is very strict about the trailing slash. Make sure:
 
 ## Current Configuration
 
-- **Client ID**: `242474501721-he2h1p6k0ji6ijj3hflrv1kiljnu78qs.apps.googleusercontent.com`
-- **Redirect URI Pattern**: `http://[host]:[port]/auth/google/callback/`
-- **Current Port**: 2219 (check your terminal when server starts)
+
+
 
